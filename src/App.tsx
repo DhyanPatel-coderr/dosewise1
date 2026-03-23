@@ -191,6 +191,9 @@ const TRANSLATIONS = {
     welcomeSub: "Your AI-powered medical record simplifier.",
     demoSecurity: "Demo Security:",
     demoSub: "This is a prototype. Passwords are hashed locally for simulation. Use",
+    demoCreds: "demo@example.com / demo123",
+    emailPlaceholder: "name@example.com",
+    passwordPlaceholder: "••••••••",
     emailLabel: "Email Address",
     passwordLabel: "Password",
     signIn: "Sign In",
@@ -256,6 +259,9 @@ const TRANSLATIONS = {
     welcomeSub: "आपका AI-संचालित मेडिकल रिकॉर्ड सरलीकरण सहायक।",
     demoSecurity: "डेमो सुरक्षा:",
     demoSub: "यह एक प्रोटोटाइप है। पासवर्ड सिमुलेशन के लिए स्थानीय रूप से हैश किए जाते हैं। परीक्षण के लिए उपयोग करें:",
+    demoCreds: "demo@example.com / demo123",
+    emailPlaceholder: "name@example.com",
+    passwordPlaceholder: "••••••••",
     emailLabel: "ईमेल पता",
     passwordLabel: "पासवर्ड",
     signIn: "साइन इन करें",
@@ -345,7 +351,7 @@ export default function App() {
   const [manualText, setManualText] = useState<string>('');
   const [inputType, setInputType] = useState<'upload' | 'manual'>('upload');
   const [age, setAge] = useState<string>('');
-  const [language, setLanguage] = useState<'EN' | 'HI'>('EN');
+  const [language, setLanguage] = useState<'EN' | 'HI'>('HI');
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -856,7 +862,7 @@ STRICT RULES:
           <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/30 p-4 rounded-2xl mb-6 flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700 dark:text-amber-300 leading-relaxed">
-              <span className="font-bold">{t.demoSecurity}</span> {t.demoSub} <span className="font-mono bg-amber-100 dark:bg-amber-900/40 px-1">demo@example.com / demo123</span> to test.
+              <span className="font-bold">{t.demoSecurity}</span> {t.demoSub} <span className="font-mono bg-amber-100 dark:bg-amber-900/40 px-1">{t.demoCreds}</span> to test.
             </p>
           </div>
 
@@ -871,7 +877,7 @@ STRICT RULES:
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-teal-500 outline-none transition-all text-slate-900 dark:text-white"
-                  placeholder="name@example.com"
+                  placeholder={t.emailPlaceholder}
                 />
               </div>
             </div>
@@ -885,7 +891,7 @@ STRICT RULES:
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl focus:ring-2 focus:ring-teal-500 outline-none transition-all text-slate-900 dark:text-white"
-                  placeholder="••••••••"
+                  placeholder={t.passwordPlaceholder}
                 />
               </div>
             </div>
