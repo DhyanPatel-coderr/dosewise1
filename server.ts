@@ -1,6 +1,7 @@
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import dotenv from "dotenv";
@@ -201,22 +202,41 @@ app.all("/api/*", (req, res) => {
 
 // Vite middleware for development
 async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  const isProduction = process.env.NODE_ENV === "production";
+  console.log(`[${new Date().toISOString()}] Starting server in ${isProduction ? 'production' : 'development'} mode`);
+
+  if (!isProduction) {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
+    console.log("Vite middleware attached");
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    console.log(`Serving static files from: ${distPath}`);
+    
+    if (fs.existsSync(distPath)) {
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        const indexPath = path.join(distPath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+          res.sendFile(indexPath);
+        } else {
+          console.error(`index.html not found at: ${indexPath}`);
+          res.status(404).send("Application build not found. Please run 'npm run build' first.");
+        }
+      });
+    } else {
+      console.error(`dist directory not found at: ${distPath}`);
+      app.get('*', (req, res) => {
+        res.status(404).send("Application build not found. Please run 'npm run build' first.");
+      });
+    }
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
   });
 }
 
