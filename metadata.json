@@ -1,0 +1,5 @@
+{
+  "name": "Remix: Dosewise",
+  "description": "AI-powered medical document parser that converts complex discharge summaries into clear, actionable dashboards.",
+  "requestFramePermissions": []
+}
